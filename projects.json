@@ -1,0 +1,9 @@
+[
+  {
+    "id": "projet1",
+    "title": "CV-tweaker",
+    "description": "Development of a CV-tweaking app using Rust (Tauri), a React JS frontend and ollama embedding model nomic-embed-text"
+
+  }
+]
+
