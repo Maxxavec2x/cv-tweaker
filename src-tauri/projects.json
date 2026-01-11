@@ -1,0 +1,15 @@
+[
+  {
+    "id": "cv-tweaker",
+    "title": "CV-tweaker",
+    "description": "Development of a CV-tweaking app using Rust (Tauri), a React JS frontend and ollama embedding model nomic-embed-text"
+
+  },
+
+  {
+    "id": "timeshift-tui-rs",
+    "title": "Timeshift TUI (Rust)",
+    "description": "Development of a terminal UI for Timeshift to manage snapshots more easily than the CLI. Written in Rust with Ratatui, designed for headless environments."
+  }
+]
+
