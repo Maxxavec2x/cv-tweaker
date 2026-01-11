@@ -5,24 +5,48 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 use tauri::Manager;
+use tauri::State;
+
+#[derive(Default)]
 struct Job {
-    desc: String,
-    keywords: String,
+    description: String,
+    embedding: Vec<f32>,
 }
 
 /// A project I did
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 struct Project {
     id: String,
     title: String,
     description: String,
     #[serde(default)]
     embedding: Vec<f32>,
+
+    #[serde(default)]
+    score: f32,
 }
 
 #[derive(Deserialize)]
 struct EmbeddingResponse {
     embedding: Vec<f32>,
+}
+
+impl Job {
+    /// To get embedding I use ollama with the model nomic-embed-text
+    fn get_embedding(&mut self) -> Result<(), Error> {
+        let mut map = HashMap::new();
+        map.insert("model", "nomic-embed-text");
+        map.insert("prompt", &self.description);
+
+        let client = reqwest::blocking::Client::new();
+        let res = client
+            .post("http://localhost:11434/api/embeddings")
+            .json(&map)
+            .send()?;
+        let data: EmbeddingResponse = res.json::<EmbeddingResponse>()?;
+        self.embedding = data.embedding;
+        Ok(())
+    }
 }
 
 impl Project {
@@ -50,9 +74,41 @@ fn load_projects<P: AsRef<Path>>(path: P) -> Result<Vec<Project>, serde_json::Er
     Ok(projects)
 }
 
+/// Calculate the angle between the vectors
+/// If the angle is small : the meaning is close
+/// https://en.wikipedia.org/wiki/Cosine_similarity
+fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
+    let dot: f32 = a.iter().zip(b).map(|(x, y)| x * y).sum();
+    let norm_a: f32 = a.iter().map(|x| x * x).sum::<f32>().sqrt();
+    let norm_b: f32 = b.iter().map(|x| x * x).sum::<f32>().sqrt();
+    dot / (norm_a * norm_b)
+}
+
+fn rank_project(mut projects: Vec<Project>, job: Job) -> Vec<Project> {
+    for project in projects.iter_mut() {
+        project.score = cosine_similarity(&job.embedding, &project.embedding);
+    }
+
+    projects.sort_by(|a, b| {
+        b.score
+            .partial_cmp(&a.score)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+
+    projects
+}
+
+/// This method is the main entry point from the ui
 #[tauri::command]
-fn handle_job_desc(job_desc: &str) -> String {
-    job_desc.to_string()
+fn handle_job_desc(job_desc: &str, projects: State<Vec<Project>>) -> String {
+    let mut job = Job {
+        description: job_desc.to_string(),
+        ..Default::default()
+    };
+    job.get_embedding()
+        .expect("Could not get embedding from job_desc");
+    let ranked = rank_project(projects.inner().to_vec(), job);
+    format!("Top project: {}", ranked[0].id)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -72,6 +128,7 @@ pub fn run() {
                     .get_embedding()
                     .expect("Could not get embedding for project");
             }
+            app.manage(project_list);
 
             Ok(())
         })
