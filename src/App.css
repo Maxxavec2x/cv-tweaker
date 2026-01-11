@@ -61,6 +61,7 @@ h1 {
 }
 
 input,
+textarea,
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -87,12 +88,16 @@ button:active {
 }
 
 input,
-button {
+button,
+textarea{
   outline: none;
 }
 
-#greet-input {
+#job-input {
   margin-right: 5px;
+  width: 400px;
+  min-height: 150px;
+  resize: vertical;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -106,7 +111,8 @@ button {
   }
 
   input,
-  button {
+  button,
+  textarea{
     color: #ffffff;
     background-color: #0f0f0f98;
   }

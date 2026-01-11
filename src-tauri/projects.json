@@ -5,11 +5,40 @@
     "description": "Development of a CV-tweaking app using Rust (Tauri), a React JS frontend and ollama embedding model nomic-embed-text"
 
   },
-
   {
     "id": "timeshift-tui-rs",
     "title": "Timeshift TUI (Rust)",
     "description": "Development of a terminal UI for Timeshift to manage snapshots more easily than the CLI. Written in Rust with Ratatui, designed for headless environments."
+  },
+  {
+    "id": "vm-orchestrator",
+    "title": "VM Hypervisor Orchestrator",
+    "description": "Development of a virtual machine hypervisor orchestrator using libvirt for virtualization management, a Flask backend API, and a React frontend to control and monitor VMs."
+  },
+  {
+    "id": "proxmox-security-lab",
+    "title": "Proxmox Security Lab Infrastructure",
+    "description": "Design and deployment of a company-scale network security lab based on a Proxmox cluster hosting multiple virtual machines to simulate cyber attacks and defense scenarios. Automated infrastructure provisioning and configuration using Terraform and Ansible."
+  },
+  {
+    "id": "samba-domain-controller",
+    "title": "Samba Domain Controller & Automated Deployment",
+    "description": "Deployment and administration of a Samba server acting as a Windows domain controller, including automated software and application deployment using WPKG in an enterprise-like environment."
+  },
+  {
+    "id": "soc-setup",
+    "title": "Security Operations Center (SOC) Setup",
+    "description": "Setup and configuration of a Security Operations Center using Prelude SIEM, Prewikka for event visualization, and OSSEC for host-based intrusion detection, along with penetration testing using Hydra to validate detection and response capabilities."
+  },
+  {
+    "id": "proxmox-iac-automation",
+    "title": "Proxmox Infrastructure Automation (Terraform & Ansible)",
+    "description": "Design and implementation of an automated and scalable infrastructure for deploying virtual machines on Proxmox using Terraform, followed by post-deployment configuration of services with Ansible. The project includes cloud-init VM templating, modular roles, and fully reproducible Infrastructure-as-Code workflows."
+  },
+  {
+    "id": "evolutionary-game-of-life",
+    "title": "Multiplayer Evolutionary Game of Life (Peer-to-Peer)",
+    "description": "Development of a multiplayer evolutionary Game of Life in Python using Pygame, featuring autonomous entities ('slimes') and a custom peer-to-peer broadcast network protocol without central server. Implementation of a structured message protocol for movement, interaction, combat, synchronization, and dynamic ownership of game objects."
   }
 ]
 

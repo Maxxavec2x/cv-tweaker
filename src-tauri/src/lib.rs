@@ -108,7 +108,11 @@ fn handle_job_desc(job_desc: &str, projects: State<Vec<Project>>) -> String {
     job.get_embedding()
         .expect("Could not get embedding from job_desc");
     let ranked = rank_project(projects.inner().to_vec(), job);
-    format!("Top project: {}", ranked[0].id)
+    format!(
+        "Top 3 projects !:\nTop 1: {}, with score: {}
+        \nTop 2: {}, with score {}\nTop3: {}, with score: {}",
+        ranked[0].id, ranked[0].score, ranked[1].id, ranked[1].score, ranked[2].id, ranked[2].score
+    )
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

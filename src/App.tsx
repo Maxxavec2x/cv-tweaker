@@ -25,8 +25,8 @@ function App() {
           get_cv()
         }}
       >
-        <input
-          id="greet-input"
+        <textarea
+          id="job-input"
           onChange={(e) => setJobDesc(e.currentTarget.value)}
           placeholder="Enter the job description"
         />
